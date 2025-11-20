@@ -149,15 +149,26 @@ include 'includes/header.php';
 
                     <hr class="my-4">
 
-                    <div class="mb-3">
-                        <label for="quantity" class="form-label">Quantity:</label>
-                        <input type="number" id="quantity" class="form-control quantity-input" value="1" min="1">
-                    </div>
+                   <form method="POST" action="add_to_cart.php">
+    <input type="hidden" name="product_id" value="<?php echo $product['id']; ?>">
+    <input type="hidden" name="product_name" value="<?php echo htmlspecialchars($product['title']); ?>">
+    <input type="hidden" name="product_price" value="<?php echo number_format($product['price'], 2); ?>">
+    <input type="hidden" name="product_image" value="<?php echo htmlspecialchars($category_folder . '/' . $product['image']); ?>">
 
-                    <div class="mt-4">
-                        <a href="quote.php?product_id=<?php echo $product['id']; ?>" class="btn btn-primary btn-lg">Get a Quote</a>
-                        <a href="contact.php" class="btn btn-secondary btn-lg ms-2">Ask a Question</a>
-                    </div>
+    <div class="mb-3">
+        <label for="quantity" class="form-label">Quantity:</label>
+        <input type="number" name="quantity" id="quantity" class="form-control quantity-input" value="1" min="1">
+    </div>
+
+    <div class="mt-4">
+        <button type="submit" name="add_to_cart" class="btn btn-success btn-lg">
+            Add to Cart
+        </button>
+        
+        <a href="quote.php?product_id=<?php echo $product['id']; ?>" class="btn btn-primary btn-lg ms-2">Get a Quote</a>
+        <a href="contact.php" class="btn btn-secondary btn-lg ms-2">Ask a Question</a>
+    </div>
+</form>
                 </div>
             </div>
 

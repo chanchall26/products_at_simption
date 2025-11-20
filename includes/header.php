@@ -4,6 +4,25 @@ if (session_status() == PHP_SESSION_NONE) {
 }
 require_once __DIR__ . '/../connection/db.php'; 
 ?>
+<?php
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+require_once __DIR__ . '/../connection/db.php'; 
+
+// START NEW CART COUNT LOGIC
+// START NEW CART COUNT LOGIC
+$cart_item_count = 0;
+if (isset($_SESSION['enquiry']) && is_array($_SESSION['enquiry'])) {
+    foreach ($_SESSION['enquiry'] as $item) { // Ensure loop uses 'enquiry' as well
+        // Sum the quantities of all distinct products
+        // Ensure 'quantity' exists and is an integer before summing
+        $quantity = isset($item['quantity']) ? (int)$item['quantity'] : 0;
+        $cart_item_count += $quantity; 
+    }
+}
+// END NEW CART COUNT LOGIC
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -39,14 +58,22 @@ require_once __DIR__ . '/../connection/db.php';
                 <?php else: ?>
                     <a href="login.php" class="text-decoration-none text-dark me-3"><i class="fas fa-user me-1"></i> Login / Register</a>
                 <?php endif; ?>
-                <a href="cart.php" class="text-decoration-none text-dark"><i class="fas fa-shopping-cart me-1"></i> Cart</a>
+                <a href="cart.php" class="text-decoration-none text-dark position-relative">
+    <i class="fas fa-shopping-cart me-1"></i> Cart
+    <?php if ($cart_item_count > 0): ?>
+    <span class="badge rounded-pill bg-danger position-absolute top-0 start-100 translate-middle" style="font-size: 0.7em;">
+        <?php echo $cart_item_count; ?>
+        <span class="visually-hidden">items in cart</span>
+    </span>
+    <?php endif; ?>
+</a>
             </div>
         </div>
     </div>
 </div>
 
 <!-- Main Header -->
-<header class="bg-white shadow-sm sticky-top" id="mainHeader">
+<header class="bg-white shadow-sm sticky-top" id="mainHeader" style="z-index: 1050;">
     <nav class="navbar navbar-expand-lg">
         <div class="container-fluid">
             <!-- Logo -->
